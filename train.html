@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>火车票</title>
+    <script src="layui/layui.js"></script>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script>
+        //添加导航依赖element
+        layui.use('element', function(){
+            var element = layui.element;
+            //一些事件监听
+            element.on('tab(demo)', function(data){
+                console.log(data);
+            });
+        });
+    </script>
+    <script>
+        layui.use('laydate', function(){
+            var laydate = layui.laydate;
+            var time=new Date().getTime();
+            var mint=time;
+            var maxt=time+5253120000;
+            var mtime=time+604800000;
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#test1' //指定元素
+                ,min: mint
+                ,max: maxt
+            });
+            laydate.render({
+                elem: '#test2' //指定元素
+                ,min: mint
+                ,max: maxt
+            });
+            laydate.render({
+                elem: '#test3' //指定元素
+                ,min: mint
+                ,max: mtime
+            });
+        });
+    </script>
+    <script>
+        layui.use('carousel', function(){
+            var carousel = layui.carousel;
+            //建造实例
+            carousel.render({
+                elem: '#test4'
+                ,width: '50%'
+                ,arrow: 'hover'
+                //,anim: 'updown'
+            });
+        });
+    </script>
+    <script>
+        function getQueryString() {
+            var qs = location.search.substr(1), // 获取url中"?"符后的字串
+                args = {}, // 保存参数数据的对象
+                items = qs.length ? qs.split("&") : [], // 取得每一个参数项,
+                item = null,
+                len = items.length;
+
+            for(var i = 0; i < len; i++) {
+                item = items[i].split("=");
+                var name = decodeURIComponent(item[0]),
+                    value = decodeURIComponent(item[1]);
+                if(name) {
+                    args[name] = value;
+                }
+            }
+            return args;
+        }
+        var yh=getQueryString();
+        function setmes(){
+            if (yh['name'] !== undefined && yh['name'] !== "error"){
+                if (yh['name']=='admin'){
+                    document.getElementById('login_xx').value="欢迎：";
+                    document.getElementById('register_xx').value='管理员';
+                    document.getElementById('zx').value="注销";
+                    document.getElementById('my').value="添加/删除票";
+                    document.getElementById('login_a').removeAttribute('href');
+                    document.getElementById('re_a').removeAttribute('href');
+                    document.getElementById('admin').href='add_delete_ticket.html'
+                    document.getElementById('movie_a').href="movie.html?name="+yh['name'];
+                    document.getElementById('index_a').href="index.html?name="+yh['name'];
+                    document.getElementById('train_a').href="train.html?name="+yh['name'];
+                    document.getElementById('airplane_a').href="train.html?name="+yh['name'];
+                }else{
+                    document.getElementById('login_xx').value="欢迎：";
+                    document.getElementById('register_xx').value=yh['name'];
+                    document.getElementById('zx').value="注销";
+                    document.getElementById('my').value="我的信息";
+                    document.getElementById('login_a').removeAttribute('href');
+                    document.getElementById('re_a').removeAttribute('href');
+                    document.getElementById('movie_a').href="movie.html?name="+yh['name'];
+                    document.getElementById('index_a').href="index.html?name="+yh['name'];
+                    document.getElementById('train_a').href="train.html?name="+yh['name'];
+                    document.getElementById('airplane_a').href="train.html?name="+yh['name'];
+                }
+            }
+        }
+        function zxc(){
+            yh=undefined;
+        }
+    </script>
+</head>
+<body onload="setmes()" >
+<div style="width:100%;height: 90px;text-indent: 120px">
+    <img src="image/图标.jpg">
+    <a id="login_a" href="login.html"><input readonly="readonly" id="login_xx" type="text" value="登入/" style="border: 0;width: 35px;margin-left: 65%;font-size: 15px"></a>
+    <a id="re_a" href="register.html"><input readonly="readonly" id="register_xx"   value="注册" type="text" style="border: 0;width: 45px;font-size: 15px"></a>
+    <a id="admin" href="PersonalData.php"><input readonly="readonly" id="my" type="text" style="border: 0;width: 85px;font-size: 15px"></a>
+    <a href="logoff.php"><input readonly="readonly" id="zx" type="text" style="border: 0;width: 35px;font-size: 15px"></a>
+</div>
+<div style="background-color: #ffc900;font-size: 17px;word-spacing: 50px;height: 30px;line-height:35px; border: solid 0px;text-indent: 120px">
+            <span>
+                <a id="index_a" href="index.html">首页</a>
+                <a id="train_a" href="train.html">火车票</a>
+                <a id="airplane_a" href="airplane.html">飞机票</a>
+                <a id="movie_a" href="movie.html">电影票</a>
+            </span>
+</div>
+<div style="margin:0 auto;width: 85%;height: 1000px;"  >
+    <div class="layui-tab">
+        <div class="layui-tab" style="width: 50%;float: left">
+            <ul class="layui-tab-title">
+                <li class="layui-this">火车票</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show" bor>
+                    <form class="layui-form" action="Select.php" method="post">
+                        <input type="hidden" value="1" name="t_h">
+                        <font size="2px"> 出发城市：</font>
+                        <input style="width: 45%; " type="text"  name="t_name" required  lay-verify="required"  placeholder="请输入地点" autocomplete="off" class="layui-input">
+                        <font size="2px"> 达到城市：</font>
+                        <input style="width: 45%; " type="text" name="t_dname" required  lay-verify="required" placeholder="请输入地点" autocomplete="off" class="layui-input">
+                        <font size="2px"> 出发时间：</font>
+                        <input style="width: 45%;" type="text" name="t_date" placeholder="请选择时间" class="layui-input" id="test1">
+                        <br><button class="layui-btn layui-bg-orange" lay-submit lay-filter="formDemo" >立即提交</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="layui-carousel" id="test4" style="float: left;margin-top: 10px">
+            <div carousel-item>
+                <div><img src="image/taimg.jpeg" height="100%" width="100%"/></div>
+                <div><img src="image/taimg2.jpeg" height="100%" width="100%"/></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

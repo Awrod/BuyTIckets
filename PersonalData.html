@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息</title>
+    <script src="layui/layui.js"></script>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script>
+        //添加导航依赖element
+        layui.use('element', function(){
+            var element = layui.element;
+            //一些事件监听
+            element.on('tab(demo)', function(data){
+                console.log(data);
+            });
+        });
+    </script>
+    <script>
+        layui.use('carousel', function(){
+            var carousel = layui.carousel;
+            //建造实例
+            carousel.render({
+                elem: '#test4'
+                ,width: '50%'
+                ,arrow: 'hover'
+                //,anim: 'updown'
+            });
+        });
+    </script>
+    <script>
+        function getQueryString() {
+            var qs = location.search.substr(1), // 获取url中"?"符后的字串
+                args = {}, // 保存参数数据的对象
+                items = qs.length ? qs.split("&") : [], // 取得每一个参数项,
+                item = null,
+                len = items.length;
+
+            for(var i = 0; i < len; i++) {
+                item = items[i].split("=");
+                var name = decodeURIComponent(item[0]),
+                    value = decodeURIComponent(item[1]);
+                if(name) {
+                    args[name] = value;
+                }
+            }
+            return args;
+        }
+        var yh=getQueryString();
+        function setmes() {
+            document.getElementById('movie_a').href="movie.html?name="+yh['name'];
+            document.getElementById('xxlock').href="index.html?name="+yh['name'];
+            document.getElementById('index_a').href="index.html?name="+yh['name'];
+            document.getElementById('train_a').href="train.html?name="+yh['name'];
+            document.getElementById('airplane_a').href="train.html?name="+yh['name'];
+            if (yh['name'] !== undefined) {
+                document.getElementById('username').value = yh['name'];
+                document.getElementById('pw').value = yh['pw'];
+                document.getElementById('phone').value = yh['phone'];
+                document.getElementById('idc').value = yh['id'];
+                document.getElementById('invite').value = yh['invite'];
+                document.getElementById('integral').value = yh['integral'];
+            }
+        }
+    </script>
+</head>
+<body onload="setmes()">
+<div style="width:100%;height: 90px;text-indent: 120px">
+    <img src="image/图标.jpg">
+    <a id="xxlock" href=""><input readonly="readonly" id="login_xx" type="text" value="返回首页" style="border: 0;width: 60px;margin-left: 65%;font-size: 15px"></a>
+    <a href="Select.php">我的订单</a>
+</div>
+<div style="background-color: #ffc900;font-size: 17px;word-spacing: 50px;height: 30px;line-height:35px; border:#fbff71 solid 1px;text-indent: 120px">
+    <span>
+        <a id="index_a" href="index.html">首页</a>
+        <a id="train_a" href="train.html">火车票</a>
+        <a id="airplane_a" href="airplane.html">飞机票</a>
+        <a id="movie_a" href="movie.html">电影票</a>
+    </span>
+</div>
+<div style="margin-left: 35%;margin-top: 5%">
+    <form class="layui-form" action="updata.php" method="post">
+        <input type="hidden" name="ps_data" value="T">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block" style="width: 200px">
+                <input type="text" id="username" readonly="readonly" name="username" required  lay-verify="required"  autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-inline" style="width: 200px">
+                <input type="password" id="pw" name="password" required lay-verify="required"  autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机号</label>
+            <div class="layui-input-block" style="width: 200px">
+                <input type="text" id="phone" readonly="readonly" name="phone" required  lay-verify="required"  autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">身份证</label>
+            <div class="layui-input-block" style="width: 200px">
+                <input type="text" id="idc" readonly="readonly" name="id_card" required  lay-verify="required"  autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">邀请码</label>
+            <div class="layui-input-block" style="width: 200px">
+                <input type="text" id="invite" readonly="readonly" name="invite" required  lay-verify="required"  autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">积分</label>
+            <div class="layui-input-block" style="width: 200px">
+                <input type="text" id="integral" readonly="readonly" name="integral" required  lay-verify="required"  autocomplete="off" class="layui-input">
+                <div class="layui-form-mid layui-word-aux">仅密码可修改！</div>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-left: 5%">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-bg-orange" lay-submit orl lay-filter="formDemo">立即提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

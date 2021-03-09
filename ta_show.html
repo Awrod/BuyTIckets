@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>火车飞机票</title>
+<script src="layui/layui.js"></script>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script>
+        //添加导航依赖element
+        layui.use('element', function(){
+            var element = layui.element;
+            //一些事件监听
+            element.on('tab(demo)', function(data){
+                console.log(data);
+            });
+        });
+    </script>
+    <script>
+        layui.use('laydate', function() {
+            var laydate = layui.laydate;
+            var time = new Date().getTime();
+            var mint = time;
+            var maxt = time + 5253120000;
+            var mtime = time + 604800000;
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#test3' //指定元素
+                , min: mint
+                , max: mtime
+            });
+        })
+    </script>
+    <script>
+        layui.use('carousel', function(){
+            var carousel = layui.carousel;
+            //建造实例
+            carousel.render({
+                elem: '#test4'
+                ,width: '50%'
+                ,arrow: 'hover'
+                //,anim: 'updown'
+            });
+        });
+    </script>
+    <script>
+        function getQueryString() {
+            var qs = location.search.substr(1), // 获取url中"?"符后的字串
+                args = {}, // 保存参数数据的对象
+                items = qs.length ? qs.split("&") : [], // 取得每一个参数项,
+                item = null,
+                len = items.length;
+
+            for(var i = 0; i < len; i++) {
+                item = items[i].split("=");
+                var name = decodeURIComponent(item[0]),
+                    value = decodeURIComponent(item[1]);
+                if(name) {
+                    args[name] = value;
+                }
+            }
+            return args;
+        }
+        var yh=getQueryString();
+        function setmes(){
+            for (var i=0;i<8;i++){
+                document.getElementById('tdd'+i.toString()).value=yh['mname'];
+                document.getElementById('td'+i.toString()).value=yh['date']+':'+(8+i).toString()+':30:00';
+                document.getElementById('tdp'+i.toString()).value=yh['jg'];
+                document.getElementById('tdl'+i.toString()).value=yh['lx'];
+                document.getElementById('tdq'+i.toString()).value=yh['addname']+'市区北火车/飞机站';
+            }
+            if (yh['name'] !== undefined && yh['name'] !== "error"){
+                if (yh['name']=='admin'){
+                    document.getElementById('login_xx').value="欢迎：";
+                    document.getElementById('register_xx').value='管理员';
+                    document.getElementById('zx').value="注销";
+                    document.getElementById('my').value="添加/删除票";
+                    document.getElementById('login_a').removeAttribute('href');
+                    document.getElementById('re_a').removeAttribute('href');
+                    document.getElementById('admin').href='add_delete_ticket.html'
+                    document.getElementById('movie_a').href="movie.html?name="+yh['name'];
+                    document.getElementById('index_a').href="index.html?name="+yh['name'];
+                    document.getElementById('train_a').href="train.html?name="+yh['name'];
+                    document.getElementById('airplane_a').href="train.html?name="+yh['name'];
+                }else{
+                    document.getElementById('login_xx').value="欢迎：";
+                    document.getElementById('register_xx').value=yh['name'];
+                    document.getElementById('zx').value="注销";
+                    document.getElementById('my').value="我的信息";
+                    document.getElementById('login_a').removeAttribute('href');
+                    document.getElementById('re_a').removeAttribute('href');
+                    document.getElementById('movie_a').href="movie.html?name="+yh['name'];
+                    document.getElementById('index_a').href="index.html?name="+yh['name'];
+                    document.getElementById('train_a').href="train.html?name="+yh['name'];
+                    document.getElementById('airplane_a').href="train.html?name="+yh['name'];
+                }
+            }
+        }
+        function btn_a(bname,dt,pr,lx) {
+            if (yh['name'] === undefined || yh['name'] === "error") {
+                alert("未登入，请先登入!");
+                for (var i = 0; i < 8; i++) {
+                    document.getElementById('a' + i.toString()).removeAttribute('href');
+                }
+            } else {
+                for (var i = 0; i < 8; i++) {
+                    document.getElementById('a'+i.toString()).href='buy.html?'+'bname='+bname+'&bdate='+dt+'&bpr='+(pr-yh['jf'])+'&lx='+lx+'&name='+yh['name'];
+                }
+            }
+        }
+        function btn_ab() {
+            if (yh['name'] === undefined || yh['name'] === "error") {
+                alert("未登入，请先登入!");
+                for (var i = 0; i < 8; i++) {
+                    document.getElementById('aa' + i.toString()).removeAttribute('href');
+                }
+            }
+        }
+        function zxc(){
+            yh=undefined;
+        }
+    </script>
+</head>
+<body onload="setmes()">
+<div style="width:100%;height: 90px;text-indent: 120px">
+    <img src="image/图标.jpg">
+    <a id="login_a" href="login.html"><input readonly="readonly" id="login_xx" type="text" value="登入/" style="border: 0;width: 35px;margin-left: 65%;font-size: 15px"></a>
+    <a id="re_a" href="register.html"><input readonly="readonly" id="register_xx"   value="注册" type="text" style="border: 0;width: 45px;font-size: 15px"></a>
+    <a id="admin" href="PersonalData.php"><input readonly="readonly" id="my" type="text" style="border: 0;width: 85px;font-size: 15px"></a>
+    <a href="logoff.php"><input readonly="readonly" id="zx" type="text" style="border: 0;width: 35px;font-size: 15px"></a>
+</div>
+<div style="background-color: #ffc900;font-size: 17px;word-spacing: 50px;height: 30px;line-height:35px; border:#fbff71 solid 1px;text-indent: 120px">
+            <span>
+                <a id="index_a" href="index.html">首页</a>
+                <a id="train_a" href="train.html">火车票</a>
+                <a id="airplane_a" href="airplane.html">飞机票</a>
+                <a id="movie_a" href="movie.html">电影票</a>
+            </span>
+</div>
+<div style="margin:0 auto;width: 85%;height: 1000px">
+    <table class="layui-table ">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col>
+        </colgroup>
+        <thead>
+        <tr class="layui-bg-orange">
+            <th>影片名</th>
+            <th>放映时间</th>
+            <th>价格</th>
+            <th>类型</th>
+            <th>地址</th>
+            <th>购买</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><a onclick="btn_ab()" id="aa0" href="comment.php"><input id="tdd0" readonly="readonly" style="background-color: white;border: 0;"></a></td>
+            <td><input id="td0" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdp0" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdl0" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdq0" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td style="text-align: right"><a id="a0" href=""><input type="button" onclick="btn_a(tdd0.value,td0.value,tdp0.value,tdl0.value)"  class="layui-btn layui-bg-orange" value="购买"></a></td>
+        </tr>
+        <tr>
+            <td><a onclick="btn_ab()" id="aa1" href="comment.php"><input id="tdd1" readonly="readonly" style="background-color: white;border: 0;"></a></td>
+            <td><input id="td1" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdp1" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdl1" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdq1" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td style="text-align: right"><a id="a1" href=""><input type="button"  onclick="btn_a(tdd1.value,td1.value,tdp1.value,tdl1.value)" class="layui-btn layui-bg-orange" value="购买"></a></td>
+        </tr>
+        <tr>
+            <td><a onclick="btn_ab()" id="aa2"href="comment.php"><input id="tdd2" readonly="readonly" style="background-color: white;border: 0;"></a></td>
+            <td><input id="td2" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdp2" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdl2" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdq2" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td style="text-align: right"><a id="a2" href=""><input type="button" onclick="btn_a(tdd2.value,td2.value,tdp2.value,tdl2.value)"  class="layui-btn layui-bg-orange" value="购买"></a></td>
+        </tr>
+        <tr>
+            <td><a  onclick="btn_ab()" id="aa3" href="comment.php"><input id="tdd3" readonly="readonly" style="background-color: white;border: 0;"></a></td>
+            <td><input id="td3" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdp3" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdl3" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdq3" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td style="text-align: right"><a id="a3" href=""><input type="button" onclick="btn_a(tdd3.value,td3.value,tdp3.value,tdl3.value)"  class="layui-btn layui-bg-orange" value="购买"></a></td>
+        </tr>
+        <tr>
+            <td><a onclick="btn_ab()" id="aa4" href="comment.php"><input id="tdd4" readonly="readonly" style="background-color: white;border: 0;"></a></td>
+            <td><input id="td4" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdp4" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdl4" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdq4" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td style="text-align: right"><a id="a4" href=""><input type="button" onclick="btn_a(tdd4.value,td4.value,tdp4.value,tdl4.value)" class="layui-btn layui-bg-orange" value="购买"></a></td>
+        </tr>
+        <tr>
+            <td><a onclick="btn_ab()" id="aa5" href="comment.php"></ahref><input id="tdd5" readonly="readonly" style="background-color: white;border: 0;"></a></td>
+            <td><input id="td5" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdp5" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdl5" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdq5" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td style="text-align: right"><a id="a5" href=""><input type="button"  onclick="btn_a(tdd5.value,td5.value,tdp5.value,tdl5.value)" class="layui-btn layui-bg-orange" value="购买"></a></td>
+        </tr>
+        <tr>
+            <td><a onclick="btn_ab()" id="aa6" href="comment.php"><input id="tdd6" readonly="readonly" style="background-color: white;border: 0;"></a></td>
+            <td><input id="td6" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdp6" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdl6" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdq6" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td style="text-align: right"><a  id="a6" href=""><input type="button"  onclick="btn_a(tdd6.value,td6.value,tdp6.value,tdl6.value)" class="layui-btn layui-bg-orange" value="购买"></a></td>
+        </tr>
+        <tr>
+            <td><a onclick="btn_ab()" id="aa7" href="comment.php"><input id="tdd7" readonly="readonly" style="background-color: white;border: 0;"></a></td>
+            <td><input id="td7" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdp7" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdl7" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td><input id="tdq7" readonly="readonly" style="background-color: white;border: 0;"></td>
+            <td style="text-align: right"><a id="a7" href=""><input type="button"  onclick="btn_a(tdd7.value,td7.value,tdp7.value,tdl7.value)" class="layui-btn layui-bg-orange" value="购买"></a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

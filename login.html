@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登入</title>
+    <script src="layui/layui.js"></script>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script>
+        layui.use('form', function() {
+            //刷新layui-input
+            var form = layui.form;
+            form.render();
+        });
+        //添加导航依赖element
+        layui.use('element', function(){
+            var element = layui.element;
+            //一些事件监听
+            element.on('tab(demo)', function(data){
+                console.log(data);
+            });
+        });
+    </script>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        function login(){
+            $.ajax({
+                //验证码验证
+                    //几个参数需要注意一下
+                    type: "POST",//方法类型
+                    url: ('Vcode.php'),//url
+                    data: $('#form1').serialize(),
+                    success: function (result) {
+                        var t_code=document.getElementById('code_yzm').value;
+                        if (t_code ==""){
+                            document.getElementById('code_mes').value="";
+                        }else if (result == t_code){
+                            document.getElementById('code_mes').value="验证码正确";
+                        }else{
+                            document.getElementById('code_mes').value="验证码错误,不可提交！";
+                        }
+                    },
+                    error: function () {
+                       }
+                    }
+            );
+        }
+    </script>
+</head>
+<body>
+<div style="width:100%;height: 90px;text-indent: 120px">
+    <img src="image/图标.jpg">
+    <span class="layui-breadcrumb" lay-separator="-" style="">
+          <a href="index.html"><cite>首页</cite></a>
+          <a href="login.html"><cite>登入</cite></a>
+          <a href="register.html"><cite>注册</cite></a>
+        </span>
+</div>
+<div style="margin:0 auto;width: 100%;height: 600px;background-image: url('image/bg2.jpeg');background-size: 100% 100%;padding-top: 2%">
+    <div style="background-color:rgba(255,255,255,1);width: 400px;height: 370px;text-align: center;margin-left: 70%;margin-top: 5%;padding-top: 1%">
+        <form class="layui-form" id="form1" method="post" action="logoin.php" style="margin-top: 15%" >
+            <h2 style="text-align: center">用户登入</h2>
+            <div style="margin-top: 5%">
+                &nbsp;&nbsp;&nbsp;用户名：<input type="text" style="width: 270px;display:inline-block " name="username" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+            </div>
+            <div style="margin-top: 5%">
+                &nbsp;&nbsp;&nbsp;密码：&nbsp;&nbsp;&nbsp;<input type="password" style="width: 270px;display:inline-block; "  name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+            </div>
+            <div style="margin-top: 5%">
+                &nbsp;&nbsp;&nbsp;验证码：&nbsp;&nbsp;&nbsp;<input type="text" id="code_yzm"  onblur="login()" name="yzm" required  lay-verify="required" class="layui-input" style="width:170px;display:inline-block" >
+                <img id="yzm" src='Verification_code.php?r=echo rand(); ?>' onclick="document.getElementById('yzm').src='./Verification_code.php?r='+Math.random()" style="width:100px; height:37px;display:inline-block"/>
+            </div>
+            <div style="margin-top: 1%">
+                <input id="code_mes"  readonly="readonly" type="text" style="border: 0;color: red">
+            </div>
+            <div style="margin-top: 5%;text-align: center">
+                <button  id="btu_re" class="layui-btn layui-bg-orange" lay-submit lay-filter="formDemo">登入</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>发表评论</title>
+    <script src="layui/layui.js"></script>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script>
+
+    </script>
+</head>
+<body>
+<br>
+<form class="layui-form" method="post" action="insert.php"  >
+    <input type="hidden" value="1" name="fb_comment" >
+    <div class="layui-form-item layui-form-text"  >
+        <label class="layui-form-label" >发表评论</label>
+        <div class="layui-input-block">
+            <textarea name="comment_main" placeholder="请输入内容" class="layui-textarea" style="width: 600px;"></textarea>
+            <br>
+            <button class="layui-btn layui-bg-orange " lay-submit lay-filter="formDemo" style="width: 200px;" >发布</button>
+        </div>
+    </div>
+</form>
+</body>
+</html>

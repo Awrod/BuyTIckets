@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <script src="layui/layui.js"></script>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+        layui.use('form', function() {
+            //刷新layui-input
+            var form = layui.form;
+            form.render();
+        });
+        //添加导航依赖element
+        layui.use('element', function(){
+            var element = layui.element;
+            //一些事件监听
+            element.on('tab(demo)', function(data){
+                console.log(data);
+            });
+        });
+    </script>
+    <script>
+        //限制手机号和身份证输入格式
+        function isCardNo(card)
+        {
+            var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+            if(reg.test(card) === false)
+            {
+                document.getElementById('idcard').value="身份证输入不合法，请重新输入身份证";
+            }
+        }
+        function isPhoneNo(number)
+        {
+            var reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+            if(reg.test(number) === false)
+            {
+                document.getElementById('moblie').value="手机号输入不合法，请重新输入手机号";
+            }
+        }
+    </script>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        //接收sms返回的code值
+        var code_xx=null;
+        function login(){
+            var reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+            if(reg.test(parseInt(document.getElementById('moblie').value)) === false)
+            {
+               alert("手机号输入不合法，请重新输入手机号");
+            }else {
+                $.ajax({
+                    //几个参数需要注意一下
+                    type: "POST",//方法类型
+                    url: ('sms.php'),//url
+                    data: $('#form1').serialize(),
+                    success: function (result) {
+                        code_xx = result;
+                        alert("短信发送成功！请查收");
+                    },
+                    error: function () {
+                        alert("失败");
+                    }
+
+                }
+                );
+           }
+        }
+        //验证验证码是否正确
+        function codex() {
+            var code_ht=document.getElementById('code').value;
+            if (code_ht==""){
+                document.getElementById('code_mes').value="";
+            }else if (code_ht == code_xx){
+                document.getElementById('code_mes').value="验证码正确";
+                document.getElementById("btu_re").removeAttribute("disabled");
+            }else{
+                document.getElementById('code_mes').value="验证码错误,不可提交！";
+                document.getElementById("btu_re").setAttribute("disabled", true);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div style="width:100%;height: 90px;text-indent: 120px">
+        <img src="image/图标.jpg">
+        <span class="layui-breadcrumb" lay-separator="-" style="">
+          <a href="index.html"><cite>首页</cite></a>
+          <a href="login.html"><cite>登入</cite></a>
+          <a href="register.html"><cite>注册</cite></a>
+        </span>
+    </div>
+    <div style="margin:0 auto;width: 100%;height: 600px;background-image: url('image/bg1.jpeg');background-size: 100% 100%;padding-top: 2%">
+        <div style="background-color:rgba(255,255,255,1);width: 400px;height: 500px;text-align: center;margin-left: 70%;margin-top: 2%;padding-top: 1%">
+            <form id="form1" class="layui-form"method="post" action="register.php" style="margin-top: 7%" >
+                <h2 style="text-align: center">用户注册</h2>
+                <div style="margin-top: 5%">
+                    用户名：<input  type="text"id="username"onblur="zhi()" style="width: 270px;display:inline-block " name="username" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                </div>
+                <div style="margin-top: 5%">
+                    密码：&nbsp;&nbsp;&nbsp;<input  id="password" type="password" style="width: 270px;display:inline-block; "  name="password" required lay-verify="required"  placeholder="请输入密码" autocomplete="off" class="layui-input">
+                </div>
+                <div style="margin-top: 5%">
+                    手机号：<input id="moblie" type="text"  style="width: 270px;display:inline-block "  name="moblie" required  lay-verify="required" maxlength="11" onblur="isPhoneNo(this.value)" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+                </div>
+                <div style="margin-top: 5%">
+                    身份证：<input  type="text" maxlength="18" onblur="isCardNo(this.value)" style="width: 270px;display:inline-block "  id="idcard" name="idcard" required  lay-verify="required" placeholder="请输入身份证号" autocomplete="off" class="layui-input">
+                </div>
+                <div style="margin-top: 5%">
+                    邀请码：<input  type="text" maxlength="6"  style="width: 270px;display:inline-block "  id="Invite" name="Invite"  placeholder="请输入邀请码，非必填！" autocomplete="off" class="layui-input">
+                </div>
+                <div style="margin-top: 5%">
+                    验证码：<input type="text" onblur="codex()"  id="code" style="width: 170px;display:inline-block " name="code" required  lay-verify="required" placeholder="请输入验证码" autocomplete="off" class="layui-input">
+                    <button type="button" style="width: 100px;display:inline-block " onclick="login()" class="layui-btn layui-btn-primary">发送</button>
+                </div>
+                <div style="margin-top: 1%">
+                    <input  id="code_mes" readonly="readonly" type="text" style="border: 0;color: red">
+                </div>
+                <div style="margin-top: 5%;text-align: center">
+                <button class="layui-btn layui-bg-orange" id="btu_re" lay-submit lay-filter="formDemo">立即注册</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
